@@ -1,0 +1,40 @@
+@server = http://localhost
+@port = 3000
+@resource = api
+@url = {{server}}:{{port}}/{{resource}}
+
+###############################################
+
+// Test: Get all neighborhoods
+// Expected HTTP response status code: 200
+GET {{url}}/neighborhoods
+
+###############################################
+
+
+// Test: Get all restaurants
+// Expected HTTP response status code: 200
+GET {{url}}/restaurants
+
+###############################################
+
+// Test: Get a restaurant that exists
+// Expected HTTP response status code: 200
+// Expected response: a restaurant object (json) with data
+GET {{url}}/restaurants/White Lotus
+
+###############################################
+
+// Test: Get a restaurant that does not exists
+// Expected HTTP response status code: 200
+// Expected response: an empty object (json)
+// {}
+GET {{url}}/restaurants/fail
+
+###############################################
+
+// Test: Get all restaurants
+// Expected HTTP response status code: 200
+GET {{url}}/restaurants/random
+
+###############################################
