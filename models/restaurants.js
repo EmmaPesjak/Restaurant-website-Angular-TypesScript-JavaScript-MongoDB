@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema({
     name: {type:String, required:true, unique:true},
     rating: Number,
-    adress: String,
+    address: String,
     neighborhood: String,
     owner: String,
     cuisine: String,
