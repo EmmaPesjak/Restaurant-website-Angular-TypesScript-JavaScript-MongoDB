@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/03f2b02d-77d5-4574-bc80-0d0fe0ad6513/AppServices/subscriptions/03f2b02d-77d5-4574-bc80-0d0fe0ad6513/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/empe2105-lab1-backend-dt190g",
+    "appService.deploySubpath": "."
+}
