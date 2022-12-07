@@ -33,12 +33,6 @@ GET {{url}}/restaurants/fail
 
 ###############################################
 
-// Test: Get all restaurants
-// Expected HTTP response status code: 200
-GET {{url}}/restaurants/random
-
-###############################################
-
 // Test: Post (add) a restaurant
 POST {{url}}/restaurants HTTP/1.1
 content-type: application/json
@@ -77,7 +71,18 @@ content-type: application/json
 
 ###############################################
 
+// Test: Get all restaurants
+// Expected HTTP response status code: 200
+GET {{url}}/neighborhoods/Brooklyn
+
+###############################################
 
 
+// find restaurant and aggregate
+GET {{url}}/restaurant/White Lotus
 
-// testa  aggregate/populate
+###############################################
+
+
+// find restaurant and aggregate
+GET {{url}}/all
