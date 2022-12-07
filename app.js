@@ -43,11 +43,11 @@ var Restaurants = require("./models/restaurants.js");
 //OBS 
 //OBS 
 
-// Respond to a GET request to the /api/neighborhoods route.
-// routes.get('/api/neighborhoods', async function(req, res) {
-//     const neighborhoods = await Neighborhoods.find();
-//     res.status(200).json(neighborhoods);
-// });
+//Respond to a GET request to the /api/neighborhoods route.
+app.get('/api/neighborhoods', async function(req, res) {
+    const neighborhoods = await Neighborhoods.find();
+    res.status(200).json(neighborhoods);
+});
 
 // Respond to a GET request to the /api/restaurants route.
 app.get('/api/restaurants', async function(req, res) {
@@ -184,125 +184,74 @@ app.delete('/api/restaurants/:name', async function(req, res) {
 
 
 
-
+//DETTA BEHÖVS JU INTE
 // Endpoint aggregate en restaurang med info om neighborhood
-app.get('/api/restaurant/:name', async function(req, res) {
+// app.get('/api/restaurant/:name', async function(req, res) {
 
-    const restaurantName = req.params.name
+//     const restaurantName = req.params.name
 
-    const aggregate = await Restaurants.aggregate([
-        {$match: { name: restaurantName } },
-        { $lookup: { from: "neighborhoods", localField: "neighborhood", foreignField: "name", as: "hej"} },
-        { $unwind: "$hej"},
-        { $set: { 
-            neighborhoodSize: "$hej.size", 
-            neighborhoodPopulation: "$hej.population"
-        }},
-        { $project: {
-            "_id": 0,
-            "name": 1,
-            "rating": 1,
-            "address": 1,
-            "neighborhood": 1,
-            "owner": 1,
-            "cuisine": 1,
-            "headChef": 1,
-            "priceRange": 1,
-            "michelinStars": 1,
-            "guestsPerYear": 1,
-            "phone": 1,
-            "noOfReviews": 1,
-            "latestReview": 1,
-            "neighborhoodSize": 1,
-            "neighborhoodPopulation": 1
-        }}
-    ])
+//     const aggregate = await Restaurants.aggregate([
+//         {$match: { name: restaurantName } },
+//         { $lookup: { from: "neighborhoods", localField: "neighborhood", foreignField: "name", as: "hej"} },
+//         { $unwind: "$hej"},
+//         { $set: { 
+//             neighborhoodSize: "$hej.size", 
+//             neighborhoodPopulation: "$hej.population"
+//         }},
+//         { $project: {
+//             "_id": 0,
+//             "name": 1,
+//             "rating": 1,
+//             "address": 1,
+//             "neighborhood": 1,
+//             "owner": 1,
+//             "cuisine": 1,
+//             "headChef": 1,
+//             "priceRange": 1,
+//             "michelinStars": 1,
+//             "guestsPerYear": 1,
+//             "phone": 1,
+//             "noOfReviews": 1,
+//             "latestReview": 1,
+//             "neighborhoodSize": 1,
+//             "neighborhoodPopulation": 1
+//         }}
+//     ])
 
-    res.status(200).json(aggregate);
-});
-
-
+//     res.status(200).json(aggregate);
+// });
 
 
 
-// blir ju inte helt rätt 
+
 //Endpoint  få alla restauranger i ett visst area och neighborhoodet
 // Respond to a GET request to the /api/neighborhoods route.
 app.get('/api/neighborhoods/:neighborhood', async function(req, res) {
 
     const neighborhoodName = req.params.neighborhood;
 
-    const neighborhood = await Neighborhoods.findOne({
-        name: neighborhoodName
-    });
-
-    const allNeighborhoodRestaurants = await Restaurants
-    .find({neighborhood: neighborhoodName});
-
-
-    const hej = await Neighborhoods.aggregate([
-        {$match: { name: neighborhoodName } },
-        {$addFields: {
-            restaurants: { HEjum: "homework" } 
-            }
+    const neighborhoodWithRestaurants = await Neighborhoods.aggregate([{
+        $match: { name: neighborhoodName }},
+        {$lookup: {
+            from: "restaurants",
+            localField: "name",
+            foreignField: "neighborhood",
+            as: "restaurants"
         }
-        ]);
-
-    console.log(hej)
-
-    res.status(200).json({neighborhood, allNeighborhoodRestaurants});
+    }])
+    res.status(200).json(neighborhoodWithRestaurants);
 });
 
 
-//fungerar inte
-// krav endpoint 1 OBS här behöver jag fixa så de delas in i brooklyn med dess restauranger etc.
+// krav endpoint 1 
 app.get('/api/all', async function(req, res) {
-    const restaurants = await Restaurants.find();
-    
-
-    const aggro = await Neighborhoods.aggregate( [
-        {
-          $addFields: {
-            totalHomework: { Hej: "homework" } ,
-            totalQuiz: { $sum: "$quiz" }
-          }
+    const neighborhoodsWithRestaurants = await Neighborhoods.aggregate([{
+        $lookup: {
+            from: "restaurants",
+            localField: "name",
+            foreignField: "neighborhood",
+            as: "restaurants"
         }
-     ] )
-
-    const neighborhoods = await Neighborhoods.find();
-
-    console.log(aggro)
-
-    console.log(neighborhoods)
-
-    neighborhoods.forEach(async neighborhood => {
-        console.log(neighborhood)
-
-        const allNeighborhoodRestaurants = await Restaurants
-        .find({neighborhood: neighborhood.name})
-
-        
-
-        // hej.push({
-        //     neighborhood: neighborhood,
-        //     restaurants: allNeighborhoodRestaurants
-        // })
-    });
-
-    for (var neighborhood in neighborhoods) {
-
-        //console.log(neighborhood);
-
-
-        const allNeighborhoodRestaurants = await Restaurants
-        .find({neighborhood: neighborhood.name})
-
-        //hej.({neighborhood, allNeighborhoodRestaurants})
-
-    }
-
-    console.log(hej)
-
-
-    res.status(200).json(aggro);
+    }])
+    res.status(200).json(neighborhoodsWithRestaurants);
 });
