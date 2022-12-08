@@ -71,14 +71,14 @@ content-type: application/json
 
 ###############################################
 
-// Test: Get all restaurants
+// Test: Get neighborhood with all restaurants
 // Expected HTTP response status code: 200
 GET {{url}}/neighborhoods/Brooklyn
 
 ###############################################
 
 
-// find restaurant and aggregate
+// find restaurant and aggregate  // kommenterade bort denna
 GET {{url}}/restaurant/White Lotus
 
 ###############################################
