@@ -18,6 +18,8 @@
   "homepage": "https://bitbucket.org/miun_dt190g/empe2105_project_backend_dt190g#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.0"
   }
 }

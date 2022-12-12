@@ -31,9 +31,10 @@ routes.get('/api/restaurants/:name', async function(req, res) {
 // Respond to a PUT request to the /api/restaurants/:name route.
 routes.put('/api/restaurants/:name', async function(req, res) {
     
-    // Get the name and owner from the parameters.
+    // Get the parameters.
     var name = req.params.name;
-    const owner = req.body.owner;
+    const michelinStars = req.body.michelinStars;
+    const priceRange = req.body.priceRange;
 
     // Find the restaurant with the name.
     var restaurant = await Restaurants.findOne({
@@ -42,7 +43,7 @@ routes.put('/api/restaurants/:name', async function(req, res) {
 
     // Check if the restaurant existed, update and reply.
     if (restaurant) {
-        await Restaurants.findOneAndUpdate({name : name}, {owner : owner});
+        await Restaurants.findOneAndUpdate({name : name}, {michelinStars : michelinStars, priceRange : priceRange});
         res.status(200).json(await Restaurants.findOne({
             name: name
         }));

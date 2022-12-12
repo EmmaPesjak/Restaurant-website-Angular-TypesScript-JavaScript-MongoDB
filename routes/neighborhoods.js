@@ -41,7 +41,12 @@ routes.get('/api/neighborhoods/:neighborhood', async function(req, res) {
             as: "restaurants"
         }
     }])
-    res.status(200).json(neighborhoodWithRestaurants);
+
+
+    //obs här har jag inget som kollar att man faktiskt har skrivit in ett namn som finns
+    res.status(200).json(neighborhoodWithRestaurants[0]);
+    
+    
 });
 
 

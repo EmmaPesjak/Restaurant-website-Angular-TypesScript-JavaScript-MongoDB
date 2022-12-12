@@ -31,10 +31,6 @@ dataSource.once("open", function () {
   console.log("Connected successfully");
 });
 
-// Read schemas.
-var Neighborhoods = require("./models/neighborhoods.js");
-var Restaurants = require("./models/restaurants.js");
-
 // Use routes.
 app.use('/', neighborhoodRoutes);
 app.use('/', restaurantRoutes);
