@@ -77,14 +77,15 @@ routes.post('/api/restaurants', async function(req, res) {
 
     // Check if the restaurant already exists.
     if (restaurant) {
-        res.status(409).json({error: "Restaurant already exists"});
+        res.status(409).json({error: "Restaurant already exists, please select a unique name."});
     } else {
         // Else add the restaurant.
         var restaurantToAdd = new Restaurants();
 
-        // Make sure parameters exist and make an object to add.
-        if (name && rating && address && neighborhood && owner && cuisine && headChef && priceRange &&
-            michelinStars && guestsPerYear && phone && noOfReviews && latestReview) {
+        // Make sure parameters exist, is not null or undefined, and make an object to add.
+        if (name != null && rating != null && address != null && neighborhood != null && owner != null && cuisine != null 
+            && headChef != null && priceRange != null && michelinStars != null && guestsPerYear != null  && phone != null 
+            && noOfReviews != null  && latestReview != null ) {
             restaurantToAdd.name = name;
             restaurantToAdd.rating = rating;
             restaurantToAdd.address = address;
@@ -110,7 +111,7 @@ routes.post('/api/restaurants', async function(req, res) {
             });
             res.status(201).json(myAddedRestaurant);
         } else {
-            res.status(409).json({error: "Not all parameters included"});
+            res.status(400).json({error: "Not all parameters included"});
         }
     }
 });
