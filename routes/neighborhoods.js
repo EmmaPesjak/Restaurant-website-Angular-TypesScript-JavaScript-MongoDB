@@ -1,11 +1,10 @@
-
-
-
 const routes = require('express').Router();
-var Neighborhoods = require("../models/neighborhoods.js");
+var Neighborhoods = require("../models/neighborhood.js");
 
-
-// krav endpoint 1 
+/**
+ * Respond to a GET request to the /api/all route (endpoint requrement 1).
+ * Gets all information about all neighborhoods and their restaurants. 
+ */ 
 routes.get('/api/all', async function(req, res) {
     const neighborhoodsWithRestaurants = await Neighborhoods.aggregate([{
         $lookup: {
@@ -18,36 +17,43 @@ routes.get('/api/all', async function(req, res) {
     res.status(200).json(neighborhoodsWithRestaurants);
 });
 
-
-// Respond to a GET request to the /api/neighborhoods route.
+// Respond to a GET request to the /api/neighborhoods route. Not currently used in the web app.
 routes.get('/api/neighborhoods', async function(req, res) {
     const neighborhoods = await Neighborhoods.find();
     res.status(200).json(neighborhoods);
 });
 
-
-//Endpoint  få alla restauranger i ett visst area och neighborhoodet
-// Respond to a GET request to the /api/neighborhoods route.
+/**
+ * Respond to a GET request to the /api/neighborhoods/:neighborhood route (endpoint requirement 2).
+ * Gets all information about a specific neighborhood and its restaurants.
+ */
 routes.get('/api/neighborhoods/:neighborhood', async function(req, res) {
 
+    // Get the name from the parameter.
     const neighborhoodName = req.params.neighborhood;
 
-    const neighborhoodWithRestaurants = await Neighborhoods.aggregate([{
-        $match: { name: neighborhoodName }},
-        {$lookup: {
-            from: "restaurants",
-            localField: "name",
-            foreignField: "neighborhood",
-            as: "restaurants"
-        }
-    }])
+    // Find the neighborhood with the name.
+    const neighborhood = await Neighborhoods.findOne({
+        name: neighborhoodName
+    });
 
-
-    //obs här har jag inget som kollar att man faktiskt har skrivit in ett namn som finns
-    res.status(200).json(neighborhoodWithRestaurants[0]);
-    
-    
+    // Check if the neighborhood exists.
+    if (neighborhood) {
+        // If so, aggregate and reply.
+        const neighborhoodWithRestaurants = await Neighborhoods.aggregate([{
+                $match: { name: neighborhoodName }},
+                {$lookup: {
+                    from: "restaurants",
+                    localField: "name",
+                    foreignField: "neighborhood",
+                    as: "restaurants"
+                }
+            }])
+            res.status(200).json(neighborhoodWithRestaurants[0]);
+    } else {
+        // Return an empty JSON object if the neighborhood did not exist.
+        res.status(200).json({});
+    }
 });
-
 
 module.exports = routes;

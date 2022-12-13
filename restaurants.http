@@ -5,35 +5,33 @@
 
 ###############################################
 
-// Test: Get all neighborhoods
-// Expected HTTP response status code: 200
+// Test: Get all neighborhoods.
+// Expected HTTP response status code: 200.
 GET {{url}}/neighborhoods
 
 ###############################################
 
 
-// Test: Get all restaurants
-// Expected HTTP response status code: 200
+// Test: Get all restaurants.
+// Expected HTTP response status code: 200.
 GET {{url}}/restaurants
 
 ###############################################
 
-// Test: Get a restaurant that exists
-// Expected HTTP response status code: 200
-// Expected response: a restaurant object (json) with data
+// Test: Get a restaurant that exists.
+// Expected HTTP response status code: 200.
 GET {{url}}/restaurants/White Lotus
 
 ###############################################
 
 // Test: Get a restaurant that does not exists
 // Expected HTTP response status code: 200
-// Expected response: an empty object (json)
-// {}
 GET {{url}}/restaurants/fail
 
 ###############################################
 
-// Test: Post (add) a restaurant
+// Test: Post (add) a restaurant.
+// Expected HTTP response status code: 201.
 POST {{url}}/restaurants HTTP/1.1
 content-type: application/json
 
@@ -55,35 +53,30 @@ content-type: application/json
 
 ###############################################
 
-// Test: Delete a restaurant
+// Test: Delete a restaurant.
+// Expected HTTP response status code: 200.
 DELETE {{url}}/restaurants/Test
 
 ###############################################
 
 
-// Test: Put (update) a restaurant
+// Test: Put (update) a restaurant.
+// Expected HTTP response status code: 200.
 PUT {{url}}/restaurants/Test HTTP/1.1
 content-type: application/json
 
 {
-   "michelinStars": 1,
-   "priceRange": "$"
+   "michelinStars": 1
 }
 
 ###############################################
 
-// Test: Get neighborhood with all restaurants
-// Expected HTTP response status code: 200
+// Test: Get neighborhood with all restaurants.
+// Expected HTTP response status code: 200.
 GET {{url}}/neighborhoods/Brooklyn
 
 ###############################################
 
-
-// find restaurant and aggregate  // kommenterade bort denna
-GET {{url}}/restaurant/White Lotus
-
-###############################################
-
-
-// Everything, find restaurant and aggregate
+// Test: Get all neighborhoods with all restaurants.
+// Expected HTTP  response status code: 200.
 GET {{url}}/all
