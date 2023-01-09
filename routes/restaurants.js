@@ -67,7 +67,7 @@ routes.post('/api/restaurants', async function(req, res) {
     const noOfReviews = req.body.noOfReviews;
     const latestReview = req.body.latestReview;
 
-    // Find the course in the course list.
+    // Find the restaurant in the list.
     const restaurant = await Restaurants.findOne({
         name: name
     });
